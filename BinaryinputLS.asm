@@ -5,9 +5,8 @@
          A DB 0
          C DW 0
          D DW 0
-        MSG1  DW 'HELLO$'  
-        MSG2 DW 'BYE$'    
-        MSG3 DW 'SEE YOU$'
+        MSG1  DW 'ENTERED BINARY NUMBER : $'  
+
         
     .CODE
     
@@ -38,8 +37,39 @@ SUB AL,'0'
 JMP L1
 
 
-EXIT:
+EXIT:  
+MOV AH,02H
+MOV DX,0AH
+INT 21H 
+MOV AH,09H
+LEA DX,MSG1
+INT 21H
 
+MOV CX,16
+
+PRINT: 
+
+ROL BX,1  
+
+JC P1
+JNC P0
+
+
+P1: 
+MOV AH,02H
+MOV DX,'1'
+INT 21H
+LOOP PRINT
+
+P0:
+MOV AH,02H
+MOV DX,'0'
+INT 21H
+CMP CX,0
+JE TERMINATE
+LOOP PRINT
+
+TERMINATE:
    
      MAIN ENDP
     END MAIN
